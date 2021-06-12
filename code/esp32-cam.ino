@@ -100,7 +100,7 @@ void smtpCallback(SMTP_Status status) {
     struct tm dt;
     for (size_t i=0; i<smtp.sendingResult.size(); i++) {
       SMTP_Result result = smtp.sendingResult.getItem(i);
-      localtime_r(&result.timesstamp, &dt);
+      localtime_r(&result.timestamp, &dt);
       Serial.printf("Message No: %d\n", i + 1);
       Serial.printf("Status: %s\n", result.completed ? "success" : "failed");
       Serial.printf("Date/Time: %d/%d/%d %d:%d:%d\n", dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday, dt.tm_hour, dt.tm_min, dt.tm_sec);

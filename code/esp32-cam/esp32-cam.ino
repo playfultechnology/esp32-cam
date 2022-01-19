@@ -43,13 +43,13 @@
 #include <EEPROM.h> // EEPROM flash memory
 #include <WiFi.h> // WiFi
 #include "time.h" // Time functions
-// "ESP Mail Client" by Mobizt, tested with v1.1.6
+// "ESP Mail Client" by Mobizt, tested with v1.6.4
 #include "ESP_Mail_Client.h" // e-Mail
 
 // DEFINES
 //#define USE_INCREMENTAL_FILE_NUMBERING //Uses EEPROM to store latest file stored
 #define USE_TIMESTAMP // Uses Wi-Fi to retrieve current time value
-//#define SEND_EMAIL // Uses Wi-Fi to email photo attachment
+#define SEND_EMAIL // Uses Wi-Fi to email photo attachment
 //#define TRIGGER_MODE // Photo capture triggered by GPIO pin rising/falling
 #define TIMED_MODE // Photo capture automated according to regular delay
 
@@ -100,7 +100,8 @@ void smtpCallback(SMTP_Status status) {
     struct tm dt;
     for (size_t i=0; i<smtp.sendingResult.size(); i++) {
       SMTP_Result result = smtp.sendingResult.getItem(i);
-      localtime_r(&result.timestamp, &dt);
+      time_t ts = (time_t)result.timestamp;
+      localtime_r(&ts, &dt);
       Serial.printf("Message No: %d\n", i + 1);
       Serial.printf("Status: %s\n", result.completed ? "success" : "failed");
       Serial.printf("Date/Time: %d/%d/%d %d:%d:%d\n", dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday, dt.tm_hour, dt.tm_min, dt.tm_sec);

@@ -143,7 +143,7 @@ void setup() {
   // It's an active low pin, so we write a LOW value to turn it on
   digitalWrite(ledPin, LOW);
 
-  // CAUTION - We'll disable to the brownout detection
+  // CAUTION - We'll disable the brownout detection
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
 
   // Start serial connection for debugging purposes
@@ -184,6 +184,8 @@ void setup() {
     config.fb_count = 1;
   }
 
+  // Disable any hold on pin 4 that was placed before ESP32 went to sleep
+  rtc_gpio_hold_dis(GPIO_NUM_4);
   // Use PWM channel 7 to control the white on-board LED (flash) connected to GPIO 4
   ledcSetup(7, 5000, 8);
   ledcAttachPin(4, 7);
